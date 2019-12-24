@@ -96,13 +96,16 @@ A notification policy is a destination for compliance findings.
 2. Click **Add Notification**.
 3. Provide the SNS Topic ARN in the **SNS notification...** field. See example below.
 ![alt text](./images/d9-notification-policy-sns.jpg)
-4. Click *Save*.
+4. Click **Save**.
 
 #### 9. Map Dome9 Continuous Compliance Policy to Notification Policy
 1. Goto `https://secure.dome9.com/v2/compliance-engine/continuous-compliance`
 2. Click **Add Policy**.
 3. For the last step in the wizard, select **Send to Slack**. Click **Save**.
 4. Wait 1 hour.
-> Pro Tip: Manually run a compliance report for the target Ruleset. After, return to the Continuous Compliance page, mouse-over the account:ruleset mapping and buttons will appear on the right. Click **Send All Alerts**.
+> Pro Tip: Manually force compliance findings to send faster
+> 1. Manually run a compliance report for the target Ruleset
+> 2. After, return to the Continuous Compliance page, mouse-over the account:ruleset mapping and buttons will appear on the right. 
+> 3. Click **Send All Alerts**.
 
 Setup is complete! 
