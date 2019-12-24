@@ -1,10 +1,11 @@
 # Check Point Dome9 Compliance & Governance - Slack Integration 
 AWS Lambda function which consumes Dome9 Compliance findings via SNS, pretty formats, and pushes to the defined slack channel. Filter for severity level is supported.
 
-Example Slack Message
+### Example Slack Message
+
 ![alt text](./images/slack-preview.jpg)
 
-# Flow
+## Flow
 Dome9 Contiuous Compliance -> SNS -> Lambda Function (index.js) -> Slack Webhook
 
 ## Requirements
