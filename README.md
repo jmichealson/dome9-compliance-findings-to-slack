@@ -1,6 +1,7 @@
 # Check Point Dome9 Compliance & Governance - Slack Integration 
 AWS Lambda function which consumes Dome9 Compliance findings via SNS, pretty formats, and pushes to the defined slack channel. Filter for severity level is supported.
 
+Example Slack Message
 ![alt text](./images/slack-preview.jpg)
 
 # Flow
@@ -14,7 +15,7 @@ Dome9 Contiuous Compliance -> SNS -> Lambda Function (index.js) -> Slack Webhook
 
 ## Setup
 #### 1. Deploy Slack Webhook
-1. Sign in to your Slack channel (<your channel>.slack.com)
+1. Sign in to your Slack channel (**<your channel>**.slack.com)
 2. Navigate to `https://<your-channel>.slack.com/apps/A0F7XDUAZ-incoming-webhooks?next_id=0`
 3. Scroll to the Integration Settings section.
 4. Select (or create) a Slack channel for the events from Dome9 Compliance.
@@ -44,12 +45,14 @@ aws lambda create-function \
 > Record the Lambda Function ARN for later use. 
 
 #### 4. Create SNS Topic for Compliance Findings
+Dome9 will push compliance findings to this topic.
 ```bash
 aws sns create-topic --name dome9-compliance-topic
 ```
 > Record the SNS Topic ARN for later use. 
 
-#### 5. Add permissions to allow Dome9 to publish to SNS Topic
+#### 5. Add permissions to SNS for Publishing
+Grant permissions to Dome9 to publish to SNS Topic
 ```bash
 # Provide SNS Topic ARN
 aws sns add-permission \
@@ -58,8 +61,10 @@ aws sns add-permission \
 --action-name Publish \
 --topic-arn <SNS Topic ARN>
 ```
+> Note: AWS Account 634729597623 is the Dome9 production account. 
 
 #### 6. Create the mappings between the two services
+Now that the SNS Topic and Lambda Function are created you can map the two services together. The SNS topic will invoke the Lambda function when a new message arrives.
 ```bash
 # Provide SNS Topic ARN
 aws lambda add-permission \
@@ -76,24 +81,28 @@ aws sns subscribe \
 --notification-endpoint <Lambda ARN>
 ```
 
-## 7. Set Lambda Environment Variables
-Upadte the Lambda environment variables with the appropriate values.
+#### 7. Set Lambda Environment Variables
+Update the Lambda environment variables with the appropriate values.
 
 | Env. Variable    | Description                                                                 | Default value |
 |------------------|-----------------------------------------------------------------------------|---------------|
-| `hookUrl `       | Slack Webhook URL                                                           | |
-| `slackChannel`   | Individual channel to post to                                               | general |
+| `hookUrl `       | Slack Webhook URL (from Step 1)                                             | |
+| `slackChannel`   | Individual channel to post to  (from Step 1)                                | general |
 | `severityFilter` | Compliance findings with matching severity will be posted (CSV - no spaces) | high,medium |
 
-## 8. Create Dome9 Notification Policy of SNS
+#### 8. Create Dome9 Notification Policy of SNS
+A notification policy is a destination for compliance findings.
 1. Goto `https://secure.dome9.com/v2/compliance-engine/notifications`
-2. Click *Add Notification*.
-3. Provide the SNS Topic ARN in the *SNS notification...* field. See example below.
+2. Click **Add Notification**.
+3. Provide the SNS Topic ARN in the **SNS notification...** field. See example below.
 ![alt text](./images/d9-notification-policy-sns.jpg)
 4. Click *Save*.
 
-## 9. Setup Continuous Compliance
+#### 9. Map Dome9 Continuous Compliance Policy to Notification Policy
 1. Goto `https://secure.dome9.com/v2/compliance-engine/continuous-compliance`
-2. Map the desired accounts to the Notification Policy created in the previous step.
+2. Click **Add Policy**.
+3. For the last step in the wizard, select **Send to Slack**. Click **Save**.
+4. Wait 1 hour.
+> Pro Tip: Manually run a compliance report for the target Ruleset. After, return to the Continuous Compliance page, mouse-over the account:ruleset mapping and buttons will appear on the right. Click **Send All Alerts**.
 
-Setup is complete! It may take up to an hour for the first message to be sent.
+Setup is complete! 
