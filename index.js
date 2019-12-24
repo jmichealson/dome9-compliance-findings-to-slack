@@ -102,7 +102,7 @@ function processEvent(event, callback) {
     var formatted_account = `<https://secure.dome9.com/v2/cloud-account/${message.account.vendor.toLowerCase()}/${message.account.dome9CloudAccountId}|${message.account.name}> (${message.account.vendor} | ${formatted_account_id})`;
     
     // Construct final message
-    var formatted_message = `*Dome9 Compliance & Governance* \n${message.rule.name}\n>*ReportTime*: ${message.reportTime} \n>*Status*: ${message.status} \n>*Severity Level*: ${message.rule.severity} \n>*Region*: ${message.region} \n>*Rule*: ${message.rule.name} \n>*Rule ID*: ${formatted_ruleId} \n>*Account*: ${formatted_account} \n>*Entity Type*: ${message.entity.type} \n>*Entity ID*: ${formatted_entityId}`;
+    var formatted_message = `*Dome9 Compliance & Governance* \n${message.rule.name}\n>*Report Time*: ${message.reportTime} \n>*Status*: ${message.status} \n>*Severity Level*: ${message.rule.severity} \n>*Region*: ${message.region} \n>*Rule*: ${message.rule.name} \n>*Rule ID*: ${formatted_ruleId} \n>*Account*: ${formatted_account} \n>*Entity Type*: ${message.entity.type} \n>*Entity ID*: ${formatted_entityId}`;
 
     const slackMessage = {
         channel: slackChannel,
