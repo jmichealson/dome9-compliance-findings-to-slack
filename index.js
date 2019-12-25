@@ -64,7 +64,7 @@ function processEvent(event, callback) {
     
     // Prepare message
     var message = JSON.parse(event.Records[0].Sns.Message);
-    console.log('From SNS:', message);
+    
     // Process severity filters
     if (! severityFilter) {
         severityFilter = "high,medium,low";
@@ -72,6 +72,9 @@ function processEvent(event, callback) {
     var sevFilterArray = severityFilter.toLowerCase().split(',');
     if (! sevFilterArray.includes(message.rule.severity.toLowerCase()) ) {
         callback(`Finding dropped due to severity filter. Severity levels allowed: ${severityFilter}`);
+    }
+    else {
+        console.log('From SNS:', message);
     }
     
     // Format message bits

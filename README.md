@@ -6,7 +6,7 @@ AWS Lambda function which consumes Dome9 Compliance findings via SNS, pretty for
 ![alt text](./images/slack-preview.jpg)
 
 ## Flow
-Dome9 Contiuous Compliance -> SNS -> Lambda Function (index.js) -> Slack Webhook
+Dome9 Continuous Compliance -> SNS -> Lambda Function (index.js) -> Slack Webhook
 
 ## Requirements
 * Check Point Dome9 License
@@ -16,8 +16,8 @@ Dome9 Contiuous Compliance -> SNS -> Lambda Function (index.js) -> Slack Webhook
 
 ## Setup
 #### 1. Deploy Slack Webhook
-1. Sign in to your Slack channel (**<your channel>**.slack.com)
-2. Navigate to `https://<your-channel>.slack.com/apps/A0F7XDUAZ-incoming-webhooks?next_id=0`
+1. Sign in to your Slack workspace (<your-workspace-url>.slack.com)
+2. Navigate to `https://<your-workspace-url>.slack.com/apps/A0F7XDUAZ-incoming-webhooks?next_id=0`
 3. Scroll to the Integration Settings section.
 4. Select (or create) a Slack channel for the events from Dome9 Compliance.
 5. Copy the Webhook URL. This is needed later in the Lambda environment variables section.
@@ -40,7 +40,7 @@ aws lambda create-function \
 --runtime nodejs10.x \
 --zip-file fileb://my-function.zip \
 --handler index.handler \
---environment "Variables={hookUrl='https://hooks.slack.com/services/...',slackChannel='general',severityFilter='high,medium'}" \
+--environment "Variables={hookUrl='https://hooks.slack.com/services/...',slackChannel='<slack-channel>',severityFilter='high,medium'}" \
 --role <Lambda Execution Role ARN>
 ```
 > Record the Lambda Function ARN for later use. 
@@ -88,13 +88,13 @@ Update the Lambda environment variables with the appropriate values.
 | Env. Variable    | Description                                                                 | Default value |
 |------------------|-----------------------------------------------------------------------------|---------------|
 | `hookUrl `       | Slack Webhook URL (from Step 1)                                             | |
-| `slackChannel`   | Individual channel to post to  (from Step 1)                                | general |
+| `slackChannel`   | Individual channel to post to  (from Step 1)                                | |
 | `severityFilter` | Compliance findings with matching severity will be posted (CSV - no spaces) | high,medium |
 
 #### 8. Create Dome9 Notification Policy of SNS
 A notification policy is a destination for compliance findings.
 1. Goto `https://secure.dome9.com/v2/compliance-engine/notifications`
-2. Click **Add Notification**.
+2. Click **Add Notification**. Give it a name of "Send to Slack".
 3. Provide the SNS Topic ARN in the **SNS notification...** field. See example below.
 ![alt text](./images/d9-notification-policy-sns.jpg)
 4. Click **Save**.
