@@ -16,7 +16,7 @@ Dome9 Continuous Compliance -> SNS -> Lambda Function (index.js) -> Slack Webhoo
 
 ## Setup
 #### 1. Deploy Slack Webhook
-1. Sign in to your Slack workspace (<your-workspace-url>.slack.com)
+1. Sign in to your Slack workspace (`<your-workspace-url>.slack.com`)
 2. Navigate to `https://<your-workspace-url>.slack.com/apps/A0F7XDUAZ-incoming-webhooks?next_id=0`
 3. Scroll to the Integration Settings section.
 4. Select (or create) a Slack channel for the events from Dome9 Compliance.
