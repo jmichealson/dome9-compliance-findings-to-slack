@@ -42,7 +42,8 @@ Dome9 Continuous Compliance -> SNS -> Lambda Function (index.js) -> Slack Webhoo
 4. Select (or create) a Slack channel for the events from Dome9 Compliance.
 5. Copy the Webhook URL. This is needed later in the Lambda environment variables section.
 
-#### 2. Clone the repo and Package the code
+#### 2. Clone the repo and package the code
+Login to a system with the AWS CLI installed. (e.g. Amazon Linux)
 ```bash
 yum install git zip -y
 git clone https://github.com/mambroziak/dome9-compliance-findings-to-slack.git
