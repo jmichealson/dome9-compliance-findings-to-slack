@@ -125,9 +125,11 @@ A notification policy is a destination for compliance findings.
 2. Click **Add Policy**.
 3. For the last step in the wizard, select **Send to Slack**. Click **Save**.
 4. Wait 1 hour.
-> Pro Tip: Manually force compliance findings to send faster
-> 1. Manually run a compliance report for the target Ruleset
-> 2. After, return to the Continuous Compliance page, mouse-over the account:ruleset mapping and buttons will appear on the right. 
-> 3. Click **Send All Alerts**.
+> Pro Tip: Manually force compliance findings to send
+> 1. Manually run a compliance assessment for the target ruleset and cloud account. `https://secure.dome9.com/v2/compliance-engine/policies`
+> 2. After, return to the Continuous Compliance page, mouse-over the account:ruleset mapping and buttons will appear on the right. `https://secure.dome9.com/v2/compliance-engine/continuous-compliance`
+> 3. Click the **Send All Alerts** button.
+> 4. Select the *Notification Type* of **SNS** and then select **Send to Slack** under *Notifications*.
+> 5. Click **Send**
 
 Setup is complete! 
