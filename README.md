@@ -31,7 +31,7 @@ Dome9 Continuous Compliance -> SNS -> Lambda Function (index.js) -> Slack Webhoo
 
     * Attached IAM Policies
         ```
-        AWSLambdaBasicExecutionRole : arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        AWSLambdaBasicExecutionRole | arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
         ```
 
 ## Setup
@@ -44,6 +44,7 @@ Dome9 Continuous Compliance -> SNS -> Lambda Function (index.js) -> Slack Webhoo
 
 #### 2. Clone the repo and Package the code
 ```bash
+yum install git zip -y
 git clone https://github.com/mambroziak/dome9-compliance-findings-to-slack.git
 cd dome9-compliance-findings-to-slack/
 zip my-function.zip index.js
