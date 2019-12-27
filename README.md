@@ -30,7 +30,9 @@ Dome9 Continuous Compliance -> SNS -> Lambda Function (index.js) -> Slack Webhoo
 		```
 
     * Attached IAM Policies
-        `AWSLambdaBasicExecutionRole` | `arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole`
+        ```
+        AWSLambdaBasicExecutionRole` : `arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole`
+        ```
 
 ## Setup
 #### 1. Deploy Slack Webhook
