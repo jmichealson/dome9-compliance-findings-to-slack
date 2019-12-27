@@ -12,7 +12,7 @@ Dome9 Continuous Compliance -> SNS -> Lambda Function (index.js) -> Slack Webhoo
 * Check Point Dome9 License
 * Slack Webhook
 * AWS SNS and Lambda (Node 8.10+)
-* AWS IAM Role for Lambda Execution with `AWSLambdaBasicExecutionRole` policy attached.
+* AWS IAM Role for Lambda Execution
 	* Trust Relationship Policy
 		```json
 		{
@@ -31,7 +31,7 @@ Dome9 Continuous Compliance -> SNS -> Lambda Function (index.js) -> Slack Webhoo
 
     * Attached IAM Policies
         ```
-        AWSLambdaBasicExecutionRole` : `arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole`
+        AWSLambdaBasicExecutionRole : arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
         ```
 
 ## Setup
