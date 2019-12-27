@@ -63,6 +63,7 @@ function postMessage(message, callback) {
 function processEvent(event, callback) {
     
     // Prepare message
+    var debug = false;
     var message = JSON.parse(event.Records[0].Sns.Message);
     
     // Process severity filters
@@ -71,13 +72,55 @@ function processEvent(event, callback) {
     }
     var sevFilterArray = severityFilter.toLowerCase().split(',');
     if (! sevFilterArray.includes(message.rule.severity.toLowerCase()) ) {
-        callback(`Finding dropped due to severity filter. Severity levels allowed: ${severityFilter}`);
+        if (debug) {
+            console.log('From SNS:', message);
+        }
+        console.log(`Finding dropped due to severity filter of ${message.rule.severity}. Severity levels allowed: ${severityFilter}`);
     }
     else {
         console.log('From SNS:', message);
     }
     
     // Format message bits
+    
+    /// Report Time
+    var reportTime = new Date(message.reportTime);
+    var formatted_reportTime = [
+      reportTime.getFullYear(),
+      '-',
+      reportTime.getMonth() + 1,
+      '-',
+      reportTime.getDate(),
+      ' ',
+      reportTime.getHours(),
+      ':',
+      reportTime.getMinutes(),
+      ':',
+      reportTime.getSeconds()
+    ].join('');
+    
+    /// Header
+    var formatted_header = `*Dome9 Compliance Alert - ${formatted_reportTime} UTC*`;
+    
+    /// Severity
+    var severity_icon = '';
+    switch(message.rule.severity.toLowerCase()) {
+        case 'high':
+            severity_icon = ':octagonal_sign:';
+            break;
+        case 'medium':
+            severity_icon = ':large_orange_diamond:';
+            break;
+        case 'low':
+            severity_icon = ':warning:';
+            break;
+        default:
+            severity_icon = ':warning:';
+    }
+
+    var formatted_severity = `${message.rule.severity} ${severity_icon}`;
+    
+    /// Rule ID
     var formatted_ruleId = '';
     if (message.rule.ruleId) {
         formatted_ruleId = `<https://gsl.dome9.com/${message.rule.ruleId}.html|${message.rule.ruleId}>`;
@@ -86,6 +129,7 @@ function processEvent(event, callback) {
         formatted_ruleId = "n/a";
     }
     
+    /// Entity
      var formatted_entityId = '';
     if (message.entity.type == "SecurityGroup") {
         formatted_entityId = `<https://secure.dome9.com/v2/security-group/${message.account.vendor.toLowerCase()}/${message.entity.id}|${message.entity.id}>`;
@@ -94,6 +138,7 @@ function processEvent(event, callback) {
         formatted_entityId = `<https://secure.dome9.com/v2/protected-asset/index?query=%7B%22filter%22:%7B%22fields%22:%5B%7B%22name%22:%22organizationalUnitId%22,%22value%22:%2200000000-0000-0000-0000-000000000000%22%7D%5D,%22freeTextPhrase%22:%22${message.entity.id}%22%7D%7D|${message.entity.id}>`;
     }
     
+    /// Account
     var formatted_account_id = '';
     if (message.account.vendor.toLowerCase() == "aws") {
         formatted_account_id = `<https://${message.account.id}.signin.aws.amazon.com/console/|${message.account.id}>`;
@@ -102,10 +147,10 @@ function processEvent(event, callback) {
         formatted_account_id = message.account.id;
     }
     
-    var formatted_account = `<https://secure.dome9.com/v2/cloud-account/${message.account.vendor.toLowerCase()}/${message.account.dome9CloudAccountId}|${message.account.name}> (${message.account.vendor} | ${formatted_account_id})`;
+    var formatted_account = `<https://secure.dome9.com/v2/cloud-account/${message.account.vendor.toLowerCase()}/${message.account.dome9CloudAccountId}|${message.account.name}> (${message.account.vendor}: ${formatted_account_id})`;
     
     // Construct final message
-    var formatted_message = `*Dome9 Compliance & Governance* \n${message.rule.name}\n>*Report Time*: ${message.reportTime} \n>*Status*: ${message.status} \n>*Severity Level*: ${message.rule.severity} \n>*Region*: ${message.region} \n>*Rule*: ${message.rule.name} \n>*Rule ID*: ${formatted_ruleId} \n>*Account*: ${formatted_account} \n>*Entity Type*: ${message.entity.type} \n>*Entity ID*: ${formatted_entityId}`;
+    var formatted_message = `${formatted_header} \n${message.rule.name} \n>*Status*: ${message.status} \n>*Severity Level*: ${formatted_severity} \n>*Region*: ${message.region} \n>*Rule*: ${message.rule.name} \n>*Rule ID*: ${formatted_ruleId} \n>*Account*: ${formatted_account} \n>*Entity*: ${message.entity.type} (${formatted_entityId})`;
 
     const slackMessage = {
         channel: slackChannel,
